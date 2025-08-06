@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+
+# 特別プランページは検索エンジンからのアクセスを制限
+Disallow: /special-plan
+
+# サイトマップの場所を指定
+Sitemap: https://ai-beauty-salon-association.com/sitemap.xml
+
+# よく使われるクローラーの設定
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# 不要なページのクロールを制限
+Disallow: /_next/
+Disallow: /api/
+Disallow: /*.json$ 
