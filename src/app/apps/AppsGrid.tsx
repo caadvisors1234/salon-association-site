@@ -40,7 +40,7 @@ export function AppsGrid({ apps }: AppsGridProps) {
       </AnimatedSection>
 
       {/* アプリ一覧 - カード型グリッドレイアウト */}
-      <AnimatedSection delay={0.2}>
+      <AnimatedSection delay={0.2} disableInView>
         <div className="container mx-auto px-4">
           <div className="grid gap-6 lg:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {apps.map((app, index) => (
