@@ -24,7 +24,7 @@ export function LineContactSection() {
                             className="w-full md:w-auto bg-line hover:bg-line/90 text-white border-line"
                         >
                             <a 
-                                href="https://lin.ee/YOUR_LINE_ID" 
+                                href="https://line.me/ti/p/hdbCytFpFA" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 className="touch-target"
@@ -39,7 +39,7 @@ export function LineContactSection() {
                     <div className="flex justify-center md:justify-end mt-6 md:mt-0">
                         <div className="w-40 h-40 rounded-lg overflow-hidden bg-white p-2 shadow-sm border">
                             <Image 
-                                src="/images/line-qr-code.png" 
+                                src="/images/line-qr-code.jpg" 
                                 alt="LINE友だち追加QRコード"
                                 width={144}
                                 height={144}
