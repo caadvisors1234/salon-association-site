@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import {
@@ -10,10 +11,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { Menu, Gem } from "lucide-react";
+import { Menu } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { NAV_LINKS, SITE_NAME } from "@/lib/constants";
+import icon from "@/app/icon.png";
 
 const MotionLink = motion(Link);
 
@@ -104,7 +106,13 @@ const MobileNav = () => {
               variants={itemVariants}
               onClick={closeSheet}
             >
-              <Gem className="h-6 w-6 text-primary" />
+              <Image
+                src={icon}
+                alt={`${SITE_NAME} logo`}
+                width={24}
+                height={24}
+                className="h-6 w-6"
+              />
               <span className="font-bold text-lg">{SITE_NAME}</span>
             </MotionLink>
             {NAV_LINKS.map(({ href, label }) => (
@@ -138,7 +146,13 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 sm:h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center space-x-2 touch-target">
-          <Gem className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+          <Image
+            src={icon}
+            alt={`${SITE_NAME} logo`}
+            width={24}
+            height={24}
+            className="h-5 w-5 sm:h-6 sm:w-6"
+          />
           <span className="font-bold text-base sm:text-lg">
             <span className="hidden sm:inline">{SITE_NAME}</span>
             <span className="sm:hidden">ABPA</span>
