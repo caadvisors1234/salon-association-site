@@ -36,7 +36,7 @@ npm run test:e2e  # Playwright E2E tests
 - **Styling**: Tailwind CSS 4 + shadcn/ui components
 - **Forms**: React Hook Form + Zod validation
 - **Animations**: Framer Motion
-- **Email**: Resend + React Email
+- **Email**: Nodemailer (SMTP)
 - **Testing**: Jest + Testing Library, Playwright for E2E
 
 ## Architecture
@@ -86,10 +86,13 @@ src/
 
 Required environment variables (copy `.env.example` to `.env.local`):
 ```env
-SPECIAL_PLAN_PASSWORD=your_password  # For /special-plan access
-RESEND_API_KEY=your_key             # Email functionality
-RESEND_FROM_EMAIL=noreply@domain.com
+SPECIAL_PLAN_PASSWORD=your_password      # For /special-plan access
+SMTP_HOST=sv3.sixcore.ne.jp             # SMTP server host
+SMTP_PORT=587                           # SMTP port (587 or 465)
+SMTP_USER=your-email@domain.com         # SMTP authentication user
+SMTP_PASS=your_smtp_password            # SMTP authentication password
 CONTACT_FORM_TO_EMAIL=contact@domain.com
+CONTACT_FORM_BCC_EMAIL=admin2@domain.com # Optional BCC recipient
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
@@ -114,3 +117,9 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 - Jest configuration in `jest.config.js`
 - Playwright E2E tests in `tests/` directory
 - Test setup file: `jest.setup.js`
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
