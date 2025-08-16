@@ -13,19 +13,13 @@
 SPECIAL_PLAN_PASSWORD=your_password_here
 ```
 
-### メール送信設定（SMTP）
-お問い合わせフォームからのメール送信に使用されます。Xサーバーなど契約済みのSMTPサーバーの認証情報を設定します。
+### メール送信設定
+お問い合わせフォームからのメール送信に使用されます。
 
 ```env
-# SMTPサーバー設定
-SMTP_HOST=sv3.sixcore.ne.jp              # SMTPサーバーのホスト名
-SMTP_PORT=587                            # SMTPポート（587:STARTTLS, 465:SSL）
-SMTP_USER=your-email@yourdomain.com      # SMTP認証用メールアドレス
-SMTP_PASS=your_smtp_password             # SMTP認証用パスワード
-
-# 送信先設定
-CONTACT_FORM_TO_EMAIL=contact@yourdomain.com      # 主な送信先
-CONTACT_FORM_BCC_EMAIL=admin2@yourdomain.com      # BCC送信先（オプション）
+RESEND_API_KEY=your_resend_api_key_here
+RESEND_FROM_EMAIL=noreply@yourdomain.com
+CONTACT_FORM_TO_EMAIL=contact@yourdomain.com
 ```
 
 ## オプション環境変数
@@ -50,5 +44,4 @@ NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 
 - `.env.local` ファイルはGitにコミットしないでください
 - 本番環境では強固なパスワードを設定してください
-- SMTPパスワードは定期的に変更してください
-- SMTPサーバーの設定は契約プロバイダーの情報を確認してください 
+- APIキーは定期的にローテーションしてください 
