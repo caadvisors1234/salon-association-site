@@ -10,7 +10,7 @@
 - **UIコンポーネント**: shadcn/ui
 - **アニメーション**: Framer Motion
 - **フォーム管理**: React Hook Form + Zod
-- **メール送信**: Resend + React Email
+- **メール送信**: Nodemailer (SMTP)
 - **ホスティング**: Vercel
 
 ## 開発環境のセットアップ
