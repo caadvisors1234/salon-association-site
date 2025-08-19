@@ -29,6 +29,12 @@ npm run test:e2e  # Playwright E2E tests
 
 **Always run after making changes:** `npm run lint` and `npm run test` before considering work complete.
 
+**Run specific tests:**
+```bash
+npm run test -- --testNamePattern="specific test name"  # Run specific test
+npm run test -- --watch --testPathPattern="component.test.tsx"  # Watch specific file
+```
+
 ## Tech Stack
 
 - **Framework**: Next.js 15.3.3 (App Router)
@@ -82,6 +88,12 @@ src/
 - Mobile-first responsive design
 - `cn()` utility for conditional classes (`lib/utils.ts`)
 
+## Security & Rate Limiting
+
+- Email form includes rate limiting and input sanitization (`lib/security.ts`)
+- SMTP-based email sending with enhanced security
+- Password-protected special plan section with cookie-based auth
+
 ## Environment Setup
 
 Required environment variables (copy `.env.example` to `.env.local`):
@@ -98,6 +110,9 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 - `src/app/layout.tsx` - Root layout with fonts, metadata, SEO setup
 - `src/lib/constants.ts` - Site-wide constants and navigation
 - `src/lib/plans.ts` - Pricing plan data
+- `src/lib/security.ts` - Security utilities and rate limiting
+- `src/lib/email-templates.ts` - Email template functions
+- `src/lib/data/` - Static data files (services, apps, about)
 - `tailwind.config.ts` - Tailwind configuration with custom theme
 - `components.json` - shadcn/ui configuration
 
@@ -112,8 +127,15 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 - Unit tests co-located in `__tests__` folders
 - Jest configuration in `jest.config.js`
-- Playwright E2E tests in `tests/` directory
+- Playwright E2E tests in `tests/` directory  
 - Test setup file: `jest.setup.js`
+
+## Data Management
+
+- Static content organized in `src/lib/data/` directory
+- Pricing plans centralized in `lib/plans.ts`
+- Services and app data in separate data files
+- Company information in `about-data.ts`
 
 # important-instruction-reminders
 Do what has been asked; nothing more, nothing less.
