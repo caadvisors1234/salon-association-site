@@ -1,16 +1,16 @@
 import { PageHeader } from "@/components/common/PageHeader";
-import { PricingCard } from "@/components/common/PricingCard";
-import { pricingPlans } from "@/lib/plans";
-import { Notice } from "@/components/common/Notice";
+// import { PricingCard } from "@/components/common/PricingCard";
+// import { pricingPlans } from "@/lib/plans";
+// import { Notice } from "@/components/common/Notice";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const noticeItems = [
-    "表示価格はすべて税抜き価格です。別途消費税がかかります。",
-    "1店舗あたりスタッフ10名までを「1店舗」としてカウントします。",
-    "スタッフが11名以上になる場合、超過10名ごとに「＋1店舗」として追加計算されます。",
-    "契約外での不正活用が発覚した場合、契約開始から1店舗または1名ごとに月額50,000円を請求致します。",
-]
+// const noticeItems = [
+//     "表示価格はすべて税抜き価格です。別途消費税がかかります。",
+//     "1店舗あたりスタッフ10名までを「1店舗」としてカウントします。",
+//     "スタッフが11名以上になる場合、超過10名ごとに「＋1店舗」として追加計算されます。",
+//     "契約外での不正活用が発覚した場合、契約開始から1店舗または1名ごとに月額50,000円を請求致します。",
+// ]
 
 export default function PricingPage() {
     return(

@@ -2,31 +2,31 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { motion, Variants } from "framer-motion";
+import { motion/* , Variants */ } from "framer-motion";
 import { AnimatedSection } from "@/components/common/AnimatedSection";
-import { pricingPlans } from "@/lib/plans";
-import { PricingCard } from "@/components/common/PricingCard";
+// import { pricingPlans } from "@/lib/plans";
+// import { PricingCard } from "@/components/common/PricingCard";
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2, delayChildren: 0.1 },
-  },
-};
+// const containerVariants: Variants = {
+//   hidden: { opacity: 0 },
+//   visible: {
+//     opacity: 1,
+//     transition: { staggerChildren: 0.2, delayChildren: 0.1 },
+//   },
+// };
 
-const itemVariants: Variants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.6 } },
-};
+// const itemVariants: Variants = {
+//   hidden: { y: 20, opacity: 0 },
+//   visible: { y: 0, opacity: 1, transition: { duration: 0.6 } },
+// };
 
 export function PricingPreview() {
-  const mainPlans = pricingPlans.filter(
-    (plan) => plan.name !== "賛助会員"
-  );
-  const patronPlan = pricingPlans.find(
-    (plan) => plan.name === "賛助会員"
-  );
+  // const mainPlans = pricingPlans.filter(
+  //   (plan) => plan.name !== "賛助会員"
+  // );
+  // const patronPlan = pricingPlans.find(
+  //   (plan) => plan.name === "賛助会員"
+  // );
 
   return (
     <AnimatedSection className="py-16 sm:py-24 bg-gray-50 dark:bg-gray-900">
