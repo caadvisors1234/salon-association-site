@@ -2,6 +2,8 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { PricingCard } from "@/components/common/PricingCard";
 import { pricingPlans } from "@/lib/plans";
 import { Notice } from "@/components/common/Notice";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const noticeItems = [
     "表示価格はすべて税抜き価格です。別途消費税がかかります。",
@@ -21,17 +23,29 @@ export default function PricingPage() {
             
             <section className="py-24 bg-background">
                 <div className="container mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24 items-start">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24 items-start">
                         {pricingPlans.map((plan) => (
                            <PricingCard key={plan.name} plan={plan} />
                         ))}
+                    </div> */}
+
+                    <div className="mb-24 text-center max-w-3xl mx-auto text-gray-800 dark:text-gray-200">
+                        <p className="mb-6 leading-relaxed">
+                            当協会のサービス料金は、ご利用いただくプランやサポート内容、店舗規模によって異なります。まずはヒアリングをさせていただき、最適なプランと料金をお見積もり致します。
+                        </p>
+                        <p className="mb-8 leading-relaxed">
+                            詳細はこちらよりお問い合わせください。
+                        </p>
+                        <Button asChild size="lg" className="touch-target w-full sm:w-auto">
+                            <Link href="/contact">お問い合わせ</Link>
+                        </Button>
                     </div>
 
-                    <Notice 
+                    {/* <Notice 
                         title="ご契約前の注意事項"
                         items={noticeItems}
                         variant="warning"
-                    />
+                    /> */}
                 </div>
             </section>
         </>
