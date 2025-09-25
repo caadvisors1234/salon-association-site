@@ -57,7 +57,7 @@ export function ContactForm() {
             name="company"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>会社名</FormLabel>
+                <FormLabel>店舗名または会社名</FormLabel>
                 <FormControl>
                   <Input placeholder="例）株式会社サンプル" {...field} />
                 </FormControl>
