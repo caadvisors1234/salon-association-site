@@ -1,8 +1,42 @@
 import { PageHeader } from "@/components/common/PageHeader";
 import { AnimatedSection } from "@/components/common/AnimatedSection";
 import { corporateProfile } from "@/lib/data/about-data";
+import { getAbout } from "@/lib/microcms/fetchers";
 
-export default function AboutPage() {
+// 環境変数でmicroCMS使用を切り替え
+const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
+
+// ISR: 10分ごとに再生成（microCMS使用時）
+export const revalidate = 600;
+
+export default async function AboutPage() {
+    // microCMSまたは既存データから協会概要を取得
+    let aboutData;
+    
+    if (USE_MICROCMS) {
+        try {
+            const response = await getAbout();
+            // microCMSデータを既存データ形式に変換
+            aboutData = {
+                "法人名": response.organizationName,
+                "略称": response.abbreviation,
+                "設立日": response.establishedDate,
+                "電話番号": response.phone,
+                "本社所在地": response.address,
+                "目的": response.purpose,
+                // businessContentは改行区切りの文字列なので配列に変換
+                "主たる事業内容": Array.isArray(response.businessContent) 
+                    ? response.businessContent 
+                    : response.businessContent.split('\n').filter(line => line.trim() !== ''),
+            };
+        } catch (error) {
+            console.error('Failed to fetch about from microCMS:', error);
+            // フォールバック: 既存データを使用
+            aboutData = corporateProfile;
+        }
+    } else {
+        aboutData = corporateProfile;
+    }
     return (
         <>
             <PageHeader
@@ -39,7 +73,7 @@ export default function AboutPage() {
                     >
                         <table className="w-full text-left">
                             <tbody>
-                                {Object.entries(corporateProfile).map(([key, value]) => (
+                                {Object.entries(aboutData).map(([key, value]) => (
                                     <tr key={key} className="border-b dark:border-gray-700">
                                         <th scope="row" className="py-4 pr-4 font-semibold text-foreground align-top w-1/4">{key}</th>
                                         <td className="py-4 text-muted-foreground">

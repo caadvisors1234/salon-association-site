@@ -218,7 +218,7 @@ export interface About extends MicroCMSDate {
   phone: string;
   address: string;
   purpose: string;
-  businessContent: string[];
+  businessContent: string; // テキストエリア（改行区切り）
   boardMembers: BoardMember[];
 }
 

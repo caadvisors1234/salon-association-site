@@ -11,8 +11,8 @@ Phase 2: ⏸️ 保留（料金プランは後回し）
 Phase 3: ✅ 完了（動作確認済み）
 Phase 4: ✅ 完了（アプリ紹介のmicroCMS化完了）
 Phase 5: ✅ 完了（FAQのmicroCMS化完了）
-Phase 6: 📋 次のフェーズ
-Phase 7: 📋 未着手
+Phase 6: ✅ 完了（協会概要のmicroCMS化完了）
+Phase 7: 📋 次のフェーズ
 Phase 8: 📋 未着手
 ```
 
@@ -184,10 +184,45 @@ Phase 8: 📋 未着手
 
 ---
 
-## Phase 6以降
+## Phase 6: 協会概要移行 ✅（完了）
 
-### Phase 6: 協会概要・固定ページ移行 📋
-- 協会概要とプライバシーポリシー、利用規約のCMS化
+**開始日**: 2025年10月16日  
+**完了日**: 2025年10月16日  
+**担当**: AI（コード実装）+ ユーザー（microCMS設定・データ入力）
+
+### AI完了項目 ✅
+- [x] 協会概要APIスキーマ定義書の作成
+  - `docs/microcms-schemas/about.md`
+- [x] 既存データのJSON化
+  - `docs/microcms-data/about.json`
+- [x] データ入力ガイドの作成
+  - `docs/microcms-data-input-guide-about.md`
+- [x] 型定義の確認と更新
+  - `src/lib/microcms/types.ts`（About型）
+  - `businessContent`をテキストエリア（改行区切り）からコード側で配列に変換
+- [x] データ取得関数の確認
+  - `src/lib/microcms/fetchers.ts`（getAbout）
+- [x] 協会概要ページの改修
+  - `src/app/about/page.tsx`（microCMS対応、ISR設定、配列変換処理）
+- [x] ビルド確認
+  - TypeScript: ✅ エラーなし
+  - ESLint: ✅ エラーなし
+  - Next.js Build: ✅ 成功
+
+### ユーザー作業項目 📋（次のステップ）
+- [ ] microCMSで協会概要API作成（エンドポイント: `about`、オブジェクト形式）
+- [ ] 協会概要データを入力（推定10〜15分）
+  - 入力ガイド: `docs/microcms-data-input-guide-about.md`
+  - 参照データ: `docs/microcms-data/about.json`
+- [ ] 動作確認
+  - `.env.local` で `NEXT_PUBLIC_USE_MICROCMS=true` に設定
+  - `/about` ページで表示確認
+
+**備考**: 固定ページ（プライバシーポリシー、利用規約）はCMS化を見送り（フリープラン制限のため）
+
+---
+
+## Phase 7以降
 
 ### Phase 7: 最適化（ISR/Webhook） 📋
 - パフォーマンス最適化とプレビュー機能
@@ -199,33 +234,36 @@ Phase 8: 📋 未着手
 
 ## 現在のアクション
 
-### 👤 ユーザーが行うこと（Phase 5）
+### 👤 ユーザーが行うこと（Phase 6）
 
-**Phase 5のAI作業は完了しました！** ✅
+**Phase 6のAI作業は完了しました！** ✅
 
 次はユーザー様がmicroCMSでAPIを作成し、データを入力する番です。
 
-#### ステップ1: microCMSでAPI作成
+#### ステップ1: 協会概要API作成
 
 1. microCMS管理画面にログイン
 2. 「API作成」をクリック
 3. 以下の設定でAPIを作成：
-   - **API名**: `よくある質問`
-   - **エンドポイント**: `faq`
-   - **種類**: リスト形式
-4. スキーマ定義は `docs/microcms-schemas/faq.md` を参照
+   - **API名**: `協会概要`
+   - **エンドポイント**: `about`
+   - **種類**: **オブジェクト形式** ⚠️
+4. スキーマ定義は `docs/microcms-schemas/about.md` を参照
 
-#### ステップ2: データ入力
+#### ステップ2: 協会概要データ入力
 
-1. 4つのFAQデータを入力（推定15〜20分）
-2. 入力ガイド: `docs/microcms-data-input-guide-faq.md`
-3. 参照データ: `docs/microcms-data/faq.json`
+1. 1件のデータを入力（推定10〜15分）
+2. 入力ガイド: `docs/microcms-data-input-guide-about.md`
+3. 参照データ: `docs/microcms-data/about.json`
+
+**重要**: `主たる事業内容`フィールドは**テキストエリア**で、改行区切りで入力してください。
 
 #### ステップ3: 動作確認
 
 1. `.env.local` で `NEXT_PUBLIC_USE_MICROCMS=true` に設定
 2. 開発サーバーを再起動: `npm run dev`
-3. `/faq` ページで表示確認
+3. ブラウザで確認：
+   - http://localhost:3000/about - 協会概要
 
 ---
 
@@ -245,5 +283,5 @@ Phase 8: 📋 未着手
 ---
 
 **最終更新**: 2025年10月16日  
-**現在のフェーズ**: Phase 5 - FAQ移行（AI作業完了、ユーザー作業待ち）  
-**全体進捗**: 50%完了
+**現在のフェーズ**: Phase 6 - 協会概要移行（AI作業完了、ユーザー作業待ち）  
+**全体進捗**: 60%完了
