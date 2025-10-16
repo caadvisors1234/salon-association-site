@@ -1,0 +1,26 @@
+{
+  "説明": "このファイルはmicroCMSに入力するためのサイト基本設定データです。",
+  "注意": "オブジェクト形式のため、コンテンツは1つだけ作成します。",
+  "作成日": "2025-10-01",
+  "データ": {
+    "siteName": "一般社団法人AIビューティーサロン推進協会",
+    "siteDescription": "AIビューティーサロン推進協会は、AI技術を活用して美容サロンの経営効率化、顧客満足度の向上、そして新たな価値創造を支援します。",
+    "siteUrl": "https://your-domain.com",
+    "ogImage": "/images/og-image.png",
+    "logoImage": null,
+    "catchphrase": "AIの力で、美容業界の未来を共創する。",
+    "contactEmail": "info@example.com",
+    "phone": "03-6709-2308",
+    "postalCode": "170-0013",
+    "address": "東京都豊島区東池袋1-32-2 小泉ビル4F",
+    "googleAnalyticsId": ""
+  },
+  "補足": {
+    "siteUrl": "本番環境のURLを入力してください",
+    "ogImage": "microCMSにアップロードした画像のURLまたは既存の/images/og-image.pngを使用",
+    "logoImage": "将来の拡張用のため、現時点では空でOK",
+    "contactEmail": "実際のお問い合わせ用メールアドレスに変更してください",
+    "googleAnalyticsId": "GA4測定IDがあれば入力（例: G-XXXXXXXXXX）"
+  }
+}
+

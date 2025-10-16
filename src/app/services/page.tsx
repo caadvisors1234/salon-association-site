@@ -2,9 +2,32 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { ServiceSolutionTabs } from "./ServiceSolutionTabs";
 import { Suspense } from "react";
 import { services } from "@/lib/data/services-data";
-import { APPS_DATA as apps } from "@/lib/data/apps-data";
+import { APPS_DATA as appsData } from "@/lib/data/apps-data";
+import { getApps } from "@/lib/microcms/fetchers";
 
-export default function ServicesPage() {
+// 環境変数でmicroCMS使用を切り替え
+const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
+
+// ISR: 10分ごとに再生成（microCMS使用時）
+export const revalidate = 600;
+
+export default async function ServicesPage() {
+    // microCMSまたは既存データからアプリデータを取得
+    let apps;
+    
+    if (USE_MICROCMS) {
+        try {
+            const response = await getApps();
+            apps = response.contents;
+        } catch (error) {
+            console.error('Failed to fetch apps from microCMS:', error);
+            // フォールバック: 既存データを使用
+            apps = appsData;
+        }
+    } else {
+        apps = appsData;
+    }
+
     return (
         <>
             <PageHeader
