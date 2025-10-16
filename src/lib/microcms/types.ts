@@ -184,7 +184,6 @@ export interface Service extends MicroCMSBaseContent {
  * 形式: リスト
  */
 export interface FAQ extends MicroCMSBaseContent {
-  category: string;
   question: string;
   answer: string;
   order: number;

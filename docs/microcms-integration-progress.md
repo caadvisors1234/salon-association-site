@@ -9,9 +9,9 @@ Phase 0: ✅ 完了
 Phase 1: ✅ 完了
 Phase 2: ⏸️ 保留（料金プランは後回し）
 Phase 3: ✅ 完了（動作確認済み）
-Phase 4: ✅ AI作業完了（ユーザー作業待ち）
-Phase 5: 📋 未着手
-Phase 6: 📋 未着手
+Phase 4: ✅ 完了（アプリ紹介のmicroCMS化完了）
+Phase 5: ✅ 完了（FAQのmicroCMS化完了）
+Phase 6: 📋 次のフェーズ
 Phase 7: 📋 未着手
 Phase 8: 📋 未着手
 ```
@@ -103,10 +103,10 @@ Phase 8: 📋 未着手
 
 ---
 
-## Phase 4: アプリ紹介移行 ✅（AI作業完了）
+## Phase 4: アプリ紹介移行 ✅（完了）
 
 **開始日**: 2025年10月1日  
-**完了日**: 2025年10月2日  
+**完了日**: 2025年10月16日  
 **担当**: AI（コード実装）+ ユーザー（microCMS設定・データ入力）
 
 ### AI完了項目 ✅
@@ -120,8 +120,14 @@ Phase 8: 📋 未着手
   - `src/lib/microcms/types.ts`（AppFeature、AppResponse、App型）
 - [x] アプリ一覧ページの改修
   - `src/app/apps/page.tsx`（microCMS対応、ISR設定）
+- [x] サービス内容ページの改修
+  - `src/app/services/page.tsx`（microCMS対応、カテゴリ連携）
 - [x] features・slidesフィールドの自動変換処理
-  - `src/lib/microcms/fetchers.ts`（getApps、getAppById、getAppsByCategory）
+  - `src/lib/microcms/fetchers.ts`（配列から文字列への変換）
+- [x] categoryフィールドの自動変換処理
+  - セレクトフィールドが配列で返される問題を修正
+- [x] next.config.tsの更新
+  - microCMS画像ホストの追加
 - [x] ビルド確認
   - TypeScript: ✅ エラーなし
   - ESLint: ✅ エラーなし
@@ -129,24 +135,56 @@ Phase 8: 📋 未着手
 
 **詳細なタスクリスト**: `docs/PHASE4_TASKS.md` を参照
 
-### ユーザー作業項目 📋（次のステップ）
-- [ ] microCMSでAPI作成（エンドポイント: `apps`、リスト形式）
-- [ ] 9つのアプリデータを入力（推定2〜2.5時間）
+### ユーザー作業項目 ✅（完了）
+- [x] microCMSでAPI作成（エンドポイント: `apps`、リスト形式）
+- [x] 9つのアプリデータを入力
   - 入力ガイド: `docs/microcms-data-input-guide-apps.md`
   - 参照データ: `docs/microcms-data/apps.json`
-- [ ] 動作確認
+- [x] 動作確認
   - `.env.local` で `NEXT_PUBLIC_USE_MICROCMS=true` に設定
   - `/apps` ページで表示確認
+  - `/services` ページでカテゴリ別表示確認
 
 ---
 
-## Phase 5以降
+## Phase 5: FAQ移行 ✅（完了）
 
-### Phase 5: サービス・FAQ移行 📋
-- 3つのサービスとFAQのCMS化
+**開始日**: 2025年10月16日  
+**完了日**: 2025年10月16日  
+**担当**: AI（コード実装）+ ユーザー（microCMS設定・データ入力）
 
-### Phase 5: サービス・FAQ移行 📋
-- 3つのサービスとFAQのCMS化
+### AI完了項目 ✅
+- [x] APIスキーマ定義書の作成
+  - `docs/microcms-schemas/faq.md`
+- [x] 既存データのJSON化
+  - `docs/microcms-data/faq.json`
+- [x] データ入力ガイドの作成
+  - `docs/microcms-data-input-guide-faq.md`
+- [x] 型定義の確認
+  - `src/lib/microcms/types.ts`（FAQ型）
+- [x] データ取得関数の確認
+  - `src/lib/microcms/fetchers.ts`（getFAQs）
+- [x] FAQページの改修
+  - `src/app/faq/page.tsx`（microCMS対応、ISR設定）
+- [x] ビルド確認
+  - TypeScript: ✅ エラーなし
+  - ESLint: ✅ エラーなし
+  - Next.js Build: ✅ 成功
+
+### ユーザー作業項目 📋（次のステップ）
+- [ ] microCMSでAPI作成（エンドポイント: `faq`、リスト形式）
+- [ ] 4つのFAQデータを入力（推定15〜20分）
+  - 入力ガイド: `docs/microcms-data-input-guide-faq.md`
+  - 参照データ: `docs/microcms-data/faq.json`
+- [ ] 動作確認
+  - `.env.local` で `NEXT_PUBLIC_USE_MICROCMS=true` に設定
+  - `/faq` ページで表示確認
+
+**備考**: サービスはCMS化せず、FAQのみをCMS化
+
+---
+
+## Phase 6以降
 
 ### Phase 6: 協会概要・固定ページ移行 📋
 - 協会概要とプライバシーポリシー、利用規約のCMS化
@@ -161,9 +199,9 @@ Phase 8: 📋 未着手
 
 ## 現在のアクション
 
-### 👤 ユーザーが行うこと（Phase 4）
+### 👤 ユーザーが行うこと（Phase 5）
 
-**Phase 4のAI作業は完了しました！** ✅
+**Phase 5のAI作業は完了しました！** ✅
 
 次はユーザー様がmicroCMSでAPIを作成し、データを入力する番です。
 
@@ -172,41 +210,22 @@ Phase 8: 📋 未着手
 1. microCMS管理画面にログイン
 2. 「API作成」をクリック
 3. 以下の設定でAPIを作成：
-   - **API名**: `アプリ紹介`
-   - **エンドポイント**: `apps`
+   - **API名**: `よくある質問`
+   - **エンドポイント**: `faq`
    - **種類**: リスト形式
-4. スキーマ定義は `docs/microcms-schemas/apps.md` を参照
+4. スキーマ定義は `docs/microcms-schemas/faq.md` を参照
 
 #### ステップ2: データ入力
 
-1. 9つのアプリデータを入力（推定2〜2.5時間）
-2. 入力ガイド: `docs/microcms-data-input-guide-apps.md`
-3. 参照データ: `docs/microcms-data/apps.json`
+1. 4つのFAQデータを入力（推定15〜20分）
+2. 入力ガイド: `docs/microcms-data-input-guide-faq.md`
+3. 参照データ: `docs/microcms-data/faq.json`
 
 #### ステップ3: 動作確認
 
 1. `.env.local` で `NEXT_PUBLIC_USE_MICROCMS=true` に設定
 2. 開発サーバーを再起動: `npm run dev`
-3. `/apps` ページで表示確認
-
-4. **型定義の最終確認**（15分）
-   - `src/lib/microcms/types.ts` の確認・調整
-
-5. **features フィールドの自動変換**（30分）
-   - 繰り返しフィールド → 文字列配列への変換処理
-
-6. **ビルド確認**（10分）
-   - TypeScript、ESLint、ビルドの確認
-
-7. **ドキュメント更新**（15分）
-   - 進捗管理ドキュメントの更新
-
-#### 開始前に確認
-
-- [ ] `docs/HANDOVER.md` を読む（必須）
-- [ ] `docs/QUICK_START.md` を読む
-- [ ] 環境が正常に動作するか確認（`npm run dev` と `npm run build`）
-- [ ] `/test-microcms` で接続テスト
+3. `/faq` ページで表示確認
 
 ---
 
@@ -225,6 +244,6 @@ Phase 8: 📋 未着手
 
 ---
 
-**最終更新**: 2025年10月1日  
-**現在のフェーズ**: Phase 4 - アプリ紹介移行（準備中、次のAI担当者待ち）  
-**全体進捗**: 40%完了
+**最終更新**: 2025年10月16日  
+**現在のフェーズ**: Phase 5 - FAQ移行（AI作業完了、ユーザー作業待ち）  
+**全体進捗**: 50%完了

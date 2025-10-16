@@ -1,6 +1,14 @@
 import { PageHeader } from "@/components/common/PageHeader";
 import { FaqAccordion } from "./FaqAccordion";
+import { getFAQs } from "@/lib/microcms/fetchers";
 
+// 環境変数でmicroCMS使用を切り替え
+const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
+
+// ISR: 10分ごとに再生成（microCMS使用時）
+export const revalidate = 600;
+
+// 既存データ（フォールバック用）
 const faqData = [
     {
       question: "AIに関する専門知識がなくても利用できますか？",
@@ -20,7 +28,23 @@ const faqData = [
     }
   ];
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  // microCMSまたは既存データからFAQを取得
+  let faqs;
+  
+  if (USE_MICROCMS) {
+    try {
+      const response = await getFAQs();
+      faqs = response.contents;
+    } catch (error) {
+      console.error('Failed to fetch FAQs from microCMS:', error);
+      // フォールバック: 既存データを使用
+      faqs = faqData;
+    }
+  } else {
+    faqs = faqData;
+  }
+
   return (
     <>
         <PageHeader
@@ -31,7 +55,7 @@ export default function FaqPage() {
 
         <section className="py-24 bg-background">
             <div className="container mx-auto max-w-4xl">
-                <FaqAccordion data={faqData} />
+                <FaqAccordion data={faqs} />
             </div>
         </section>
     </>

@@ -13,12 +13,6 @@ type ServiceSolutionTabsProps = {
 };
 
 export function ServiceSolutionTabs({ services, apps }: ServiceSolutionTabsProps) {
-  // デバッグ用ログ
-  console.log('=== ServiceSolutionTabs Debug ===');
-  console.log('Total apps:', apps.length);
-  console.log('Apps data:', apps.map(app => ({ id: app.id, name: app.name, category: 'category' in app ? app.category : 'NO_CATEGORY' })));
-  console.log('Services:', services.map(s => ({ id: s.id, name: s.name })));
-  
   return (
     <div className="container mx-auto px-4 py-16">
       <Tabs defaultValue={services[0]?.id} className="w-full">
@@ -70,20 +64,15 @@ export function ServiceSolutionTabs({ services, apps }: ServiceSolutionTabsProps
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {(() => {
-                    const filteredApps = apps.filter(app => {
+                  {apps
+                    .filter(app => {
                       // microCMS使用時: categoryフィールドでフィルタリング
                       if ('category' in app) {
-                        const matches = app.category === service.name;
-                        console.log(`App "${app.name}" category="${app.category}" vs service="${service.name}" => ${matches}`);
-                        return matches;
+                        return app.category === service.name;
                       }
                       // 既存データ使用時: relatedAppIdsでフィルタリング
                       return service.relatedAppIds.includes(app.id);
-                    });
-                    console.log(`Filtered apps for "${service.name}":`, filteredApps.length, filteredApps.map(a => a.name));
-                    return filteredApps;
-                  })()
+                    })
                     .map((app, index) => (
                       <SolutionAppCard 
                         key={app.id} 
