@@ -55,7 +55,7 @@ https://your-domain.com/api/revalidate
 
 例:
 ```
-https://salon-association.vercel.app/api/revalidate
+https://ai-beauty.tokyo/api/revalidate
 ```
 
 ---
@@ -64,102 +64,95 @@ https://salon-association.vercel.app/api/revalidate
 
 microCMS管理画面で、以下のAPIにWebhookを設定します。
 
-#### 2-1. サイト基本情報（site-config）
+> ⚠️ **重要**: Webhook種別は**「カスタム通知」を選択**してください。  
+> 「Vercel」を選択すると、Deploy Hook用の設定になり、カスタムBodyを送信できません。
+
+---
+
+## 設定方法（2パターン）
+
+microCMSのUI仕様により、以下の2パターンのいずれかで設定してください。
+
+### 🅰️ パターンA：カスタムリクエストボディを使用（推奨）
+
+「カスタムリクエストボディ」機能が利用可能な場合はこちらを推奨します。
+
+### 🅱️ パターンB：標準Webhook形式を使用（シンプル）
+
+「カスタムリクエストボディ」のトグルが見つからない場合は、こちらを使用してください。
+
+---
+
+## 🅰️ パターンA：カスタムリクエストボディを使用（推奨）
+
+**「カスタムリクエストボディ」のトグルが見つかる場合はこちらを使用してください。**
+
+### A-1. サイト基本情報（site-config）
 
 1. microCMS管理画面で「サイト設定」APIを開く
 2. 右上の「API設定」をクリック
 3. 「Webhook」タブをクリック
 4. 「追加」ボタンをクリック
-5. 以下を入力：
-   - **Webhook名**: `サイト再検証`
+5. **Webhook種別**: 「**カスタム通知**」を選択
+6. 基本設定を入力：
+   - **Webhook名**: `サイト再検証`（任意）
    - **URL**: `https://your-domain.com/api/revalidate`
-   - **カスタムヘッダー**: （設定不要）
-   - **HTTP Method**: `POST`
-   - **Body**:
-     ```json
-     {
-       "secret": "your-random-secret-key-change-this-to-secure-value",
-       "endpoint": "site-config"
-     }
-     ```
-   - **イベント**: 
-     - ✅ コンテンツの公開
-     - ✅ コンテンツの更新
-6. 「保存」をクリック
+   - **シークレット**: （空欄でOK）
+7. **画面を下にスクロール**して「**カスタムリクエストボディ**」のトグルを **ON** にする
+8. 表示されたテキストエリアに以下のJSONを入力：
+   ```json
+   {
+     "secret": "your-random-secret-key-change-this-to-secure-value",
+     "endpoint": "site-config"
+   }
+   ```
+9. **通知タイミングの設定**:
+   - ✅ **コンテンツの公開**（管理画面による操作）
+   - ✅ **コンテンツの公開**（APIによる操作）
+   - ✅ **コンテンツの更新**（管理画面による操作）
+   - ✅ **コンテンツの更新**（APIによる操作）
+10. 「設定する」ボタンをクリック
+
+### A-2〜A-4（apps, faq, about）
+
+同様の手順で、`endpoint` の値を変更して設定してください：
+- **apps**: `"endpoint": "apps"`
+- **faq**: `"endpoint": "faq"`  
+- **about**: `"endpoint": "about"`
 
 ---
 
-#### 2-2. アプリ紹介（apps）
+## 🅱️ パターンB：標準Webhook形式を使用（シンプル）
 
-1. microCMS管理画面で「アプリ紹介」APIを開く
+**「カスタムリクエストボディ」が見つからない場合は、こちらを使用してください。**  
+カスタムBodyは設定せず、microCMSの標準Webhookペイロードを利用します。
+
+### B-1. サイト基本情報（site-config）
+
+1. microCMS管理画面で「サイト設定」APIを開く
 2. 右上の「API設定」をクリック
 3. 「Webhook」タブをクリック
 4. 「追加」ボタンをクリック
-5. 以下を入力：
-   - **Webhook名**: `アプリ再検証`
+5. **Webhook種別**: 「**カスタム通知**」を選択
+6. 以下を入力：
+   - **Webhook名**: `サイト再検証`（任意）
    - **URL**: `https://your-domain.com/api/revalidate`
-   - **HTTP Method**: `POST`
-   - **Body**:
-     ```json
-     {
-       "secret": "your-random-secret-key-change-this-to-secure-value",
-       "endpoint": "apps"
-     }
-     ```
-   - **イベント**: 
-     - ✅ コンテンツの公開
-     - ✅ コンテンツの更新
-     - ✅ コンテンツの削除
-6. 「保存」をクリック
+   - **シークレット**: （空欄でOK）
+   - **カスタムリクエストヘッダー**: （空欄でOK）
+7. **通知タイミングの設定**:
+   - ✅ **コンテンツの公開**（管理画面による操作）
+   - ✅ **コンテンツの公開**（APIによる操作）
+   - ✅ **コンテンツの更新**（管理画面による操作）
+   - ✅ **コンテンツの更新**（APIによる操作）
+8. 「設定する」ボタンをクリック
 
----
+> 💡 **ポイント**: microCMSが自動的に標準Webhookペイロード（`{ api: "site-config", ... }`）を送信します。  
+> 実装側で `api` フィールドから `endpoint` を自動取得します。
 
-#### 2-3. FAQ（faq）
+### B-2〜B-4（apps, faq, about）
 
-1. microCMS管理画面で「よくある質問」APIを開く
-2. 右上の「API設定」をクリック
-3. 「Webhook」タブをクリック
-4. 「追加」ボタンをクリック
-5. 以下を入力：
-   - **Webhook名**: `FAQ再検証`
-   - **URL**: `https://your-domain.com/api/revalidate`
-   - **HTTP Method**: `POST`
-   - **Body**:
-     ```json
-     {
-       "secret": "your-random-secret-key-change-this-to-secure-value",
-       "endpoint": "faq"
-     }
-     ```
-   - **イベント**: 
-     - ✅ コンテンツの公開
-     - ✅ コンテンツの更新
-     - ✅ コンテンツの削除
-6. 「保存」をクリック
-
----
-
-#### 2-4. 協会概要（about）
-
-1. microCMS管理画面で「協会概要」APIを開く
-2. 右上の「API設定」をクリック
-3. 「Webhook」タブをクリック
-4. 「追加」ボタンをクリック
-5. 以下を入力：
-   - **Webhook名**: `協会概要再検証`
-   - **URL**: `https://your-domain.com/api/revalidate`
-   - **HTTP Method**: `POST`
-   - **Body**:
-     ```json
-     {
-       "secret": "your-random-secret-key-change-this-to-secure-value",
-       "endpoint": "about"
-     }
-     ```
-   - **イベント**: 
-     - ✅ コンテンツの公開
-     - ✅ コンテンツの更新
-6. 「保存」をクリック
+同じ手順で、各API（アプリ紹介、よくある質問、協会概要）にも設定してください。  
+`endpoint` は自動的にAPIの名前（apps, faq, about）から判定されます。
 
 ---
 
@@ -170,8 +163,9 @@ microCMS管理画面で、以下のAPIにWebhookを設定します。
 microCMS管理画面で：
 
 1. 各APIの「Webhook」タブを開く
-2. 設定したWebhookの「テスト送信」ボタンをクリック
-3. レスポンスが `200 OK` で、以下のようなJSONが返ってくればOK：
+2. 設定したWebhookの右側にある「**...**」（3点メニュー）をクリック
+3. 「**テスト送信**」を選択
+4. 送信履歴に表示されるレスポンスが `200` で、以下のようなJSONが返ってくればOK：
 
 ```json
 {
@@ -181,6 +175,8 @@ microCMS管理画面で：
   "now": 1697500000000
 }
 ```
+
+> 💡 送信履歴は、Webhook一覧の下部「**送信履歴**」タブで確認できます。
 
 ### 2. 実際のコンテンツ更新テスト
 
