@@ -1,10 +1,20 @@
 import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 export default function PricingPage() {
+    // パンくずリスト用データ
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const breadcrumbItems = [
+        { name: 'トップ', url: siteUrl },
+        { name: '料金プラン', url: `${siteUrl}/pricing` }
+    ];
+
     return(
         <>
+            <BreadcrumbJsonLd items={breadcrumbItems} />
+            
             <PageHeader
                 title="料金プラン"
                 description="あなたのサロンの規模とニーズに合わせた、最適なプランをご提案します。"

@@ -52,13 +52,24 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(siteUrl),
-    title: `${siteName} | AIでサロン経営を革新`,
+    title: {
+      default: `${siteName} | AIでサロン経営を革新`,
+      template: `%s | ${siteName}`,
+    },
     description: siteDescription,
-    keywords: ["AI", "美容サロン", "経営効率化", "集客自動化", "リピート率向上", "採用最適化"],
+    keywords: ["AI", "美容サロン", "経営効率化", "集客自動化", "リピート率向上", "採用最適化", "DX", "サロンDX", "美容室経営", "ヘアサロン", "HotPepper Beauty", "Google口コミ", "スタッフ育成"],
+    authors: [{ name: siteName }],
+    creator: siteName,
+    publisher: siteName,
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
     openGraph: {
       title: `${siteName} | AIでサロン経営を革新`,
       description: siteDescription,
-      url: "/",
+      url: siteUrl,
       siteName: siteName,
       images: [
         {
@@ -80,13 +91,18 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
+      nocache: false,
       googleBot: {
         index: true,
         follow: true,
+        noimageindex: false,
         'max-video-preview': -1,
         'max-image-preview': 'large',
         'max-snippet': -1,
       },
+    },
+    alternates: {
+      canonical: siteUrl,
     },
   };
 }
@@ -96,15 +112,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Google Analytics IDを取得
+  // Google Analytics ID と サイト情報を取得
   let gaId = process.env.NEXT_PUBLIC_GA_ID || "";
+  let phone = "";
+  let address = "";
+  let postalCode = "";
   
-  if (USE_MICROCMS && !gaId) {
+  if (USE_MICROCMS) {
     try {
       const config = await getSiteConfig();
-      gaId = config.googleAnalyticsId || "";
+      gaId = gaId || config.googleAnalyticsId || "";
+      phone = config.phone || "";
+      address = config.address || "";
+      postalCode = config.postalCode || "";
     } catch (error) {
-      console.error('Failed to fetch GA ID from microCMS:', error);
+      console.error('Failed to fetch config from microCMS:', error);
     }
   }
 
@@ -118,7 +140,7 @@ export default async function RootLayout({
         )}
         suppressHydrationWarning={true}
       >
-        <OrganizationJsonLd />
+        <OrganizationJsonLd phone={phone} address={address} postalCode={postalCode} />
         <WebsiteJsonLd />
         <Header />
         <main className="flex-1">{children}</main>

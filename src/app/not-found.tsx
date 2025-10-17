@@ -3,8 +3,12 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ページが見つかりません | AIビューティーサロン推進協会",
-  description: "お探しのページは存在しないか、移動した可能性があります。",
+  title: "ページが見つかりません",
+  description: "お探しのページは存在しないか、移動した可能性があります。URLをご確認いただくか、トップページからお探しください。",
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function NotFound() {

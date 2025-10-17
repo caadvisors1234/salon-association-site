@@ -2,6 +2,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { AnimatedSection } from "@/components/common/AnimatedSection";
 import { corporateProfile } from "@/lib/data/about-data";
 import { getAbout } from "@/lib/microcms/fetchers";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 // 環境変数でmicroCMS使用を切り替え
 const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
@@ -37,8 +38,18 @@ export default async function AboutPage() {
     } else {
         aboutData = corporateProfile;
     }
+    
+    // パンくずリスト用データ
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const breadcrumbItems = [
+        { name: 'トップ', url: siteUrl },
+        { name: '協会概要', url: `${siteUrl}/about` }
+    ];
+    
     return (
         <>
+            <BreadcrumbJsonLd items={breadcrumbItems} />
+            
             <PageHeader
                 title="協会概要"
                 description="私たちの理念と活動内容をご紹介します。"

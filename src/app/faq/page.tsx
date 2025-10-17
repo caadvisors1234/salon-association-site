@@ -1,6 +1,7 @@
 import { PageHeader } from "@/components/common/PageHeader";
 import { FaqAccordion } from "./FaqAccordion";
 import { getFAQs } from "@/lib/microcms/fetchers";
+import { FAQJsonLd, BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 // 環境変数でmicroCMS使用を切り替え
 const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
@@ -45,8 +46,18 @@ export default async function FaqPage() {
     faqs = faqData;
   }
 
+  // パンくずリスト用データ
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const breadcrumbItems = [
+    { name: 'トップ', url: siteUrl },
+    { name: 'よくある質問', url: `${siteUrl}/faq` }
+  ];
+
   return (
     <>
+        <FAQJsonLd faqs={faqs} />
+        <BreadcrumbJsonLd items={breadcrumbItems} />
+        
         <PageHeader
             title="よくある質問"
             description="サービスや協会に関する、よくあるご質問をまとめました。"

@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { services } from "@/lib/data/services-data";
 import { APPS_DATA as appsData } from "@/lib/data/apps-data";
 import { getApps } from "@/lib/microcms/fetchers";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 // 環境変数でmicroCMS使用を切り替え
 const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
@@ -28,8 +29,17 @@ export default async function ServicesPage() {
         apps = appsData;
     }
 
+    // パンくずリスト用データ
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const breadcrumbItems = [
+        { name: 'トップ', url: siteUrl },
+        { name: '事業内容', url: `${siteUrl}/services` }
+    ];
+
     return (
         <>
+            <BreadcrumbJsonLd items={breadcrumbItems} />
+            
             <PageHeader
                 title="事業内容"
                 description="私たちの提供するサービスは、単なるツール導入に留まりません。"
