@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { AppsGrid } from "./AppsGrid";
 import { getAllApps } from "@/lib/data/apps-data";
 import { getApps } from "@/lib/microcms/fetchers";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 
 // 環境変数でmicroCMS使用を切り替え
 const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
@@ -40,8 +41,17 @@ export default async function AppsPage() {
     apps = getAllApps();
   }
 
+  // パンくずリスト用データ
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const breadcrumbItems = [
+    { name: 'トップ', url: siteUrl },
+    { name: 'アプリ紹介', url: `${siteUrl}/apps` }
+  ];
+
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} />
+      
       <PageHeader
         title="アプリ紹介"
         description="AIビューティーサロン推進協会が提供する革新的なアプリケーションで、サロン経営を次のレベルへ"

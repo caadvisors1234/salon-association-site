@@ -14,7 +14,13 @@ export function JsonLd({ data }: JsonLdProps) {
 }
 
 // 組織情報の構造化データ
-export function OrganizationJsonLd() {
+interface OrganizationJsonLdProps {
+  phone?: string;
+  address?: string;
+  postalCode?: string;
+}
+
+export function OrganizationJsonLd({ phone, address, postalCode }: OrganizationJsonLdProps) {
   const organizationData = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -22,16 +28,20 @@ export function OrganizationJsonLd() {
     "url": siteUrl,
     "logo": `${siteUrl}/images/logo.png`,
     "description": "AIの力で美容業界の未来を共創する。サロン経営の効率化、顧客満足度の向上、新たな価値創造を支援します。",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+81-XX-XXXX-XXXX",
-      "contactType": "customer service",
-      "availableLanguage": "Japanese"
-    },
+    ...(phone && {
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": phone,
+        "contactType": "customer service",
+        "availableLanguage": "Japanese"
+      }
+    }),
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "JP",
-      "addressLocality": "東京都"
+      "addressLocality": "東京都",
+      ...(postalCode && { "postalCode": postalCode }),
+      ...(address && { "streetAddress": address })
     },
     "foundingDate": "2025",
     "keywords": ["AI", "美容サロン", "経営効率化", "集客", "リピート率向上", "採用"],
@@ -137,4 +147,54 @@ export function ArticleJsonLd({
   };
 
   return <JsonLd data={articleData} />;
+}
+
+// FAQページ用の構造化データ
+interface FAQJsonLdProps {
+  faqs: Array<{
+    question: string;
+    answer: string;
+  }>;
+}
+
+export function FAQJsonLd({ faqs }: FAQJsonLdProps) {
+  const faqData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer
+      }
+    }))
+  };
+
+  return <JsonLd data={faqData} />;
+}
+
+// パンくずリスト用の構造化データ
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface BreadcrumbJsonLdProps {
+  items: BreadcrumbItem[];
+}
+
+export function BreadcrumbJsonLd({ items }: BreadcrumbJsonLdProps) {
+  const breadcrumbData = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.url
+    }))
+  };
+
+  return <JsonLd data={breadcrumbData} />;
 } 
