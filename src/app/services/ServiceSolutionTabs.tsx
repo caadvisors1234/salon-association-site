@@ -64,9 +64,15 @@ export function ServiceSolutionTabs({ services, apps }: ServiceSolutionTabsProps
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {service.relatedAppIds
-                    .map(appId => apps.find(app => app.id === appId))
-                    .filter((app): app is App => app !== undefined)
+                  {apps
+                    .filter(app => {
+                      // microCMS使用時: categoryフィールドでフィルタリング
+                      if ('category' in app) {
+                        return app.category === service.name;
+                      }
+                      // 既存データ使用時: relatedAppIdsでフィルタリング
+                      return service.relatedAppIds.includes(app.id);
+                    })
                     .map((app, index) => (
                       <SolutionAppCard 
                         key={app.id} 

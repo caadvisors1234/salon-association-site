@@ -8,6 +8,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/seo/JsonLd";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { getSiteConfig } from "@/lib/microcms/fetchers";
+import { SITE_NAME } from "@/lib/constants";
 
 const ebGaramond = EB_Garamond({
   subsets: ["latin"],
@@ -20,54 +22,91 @@ const notoSansJp = Noto_Sans_JP({
   subsets: ["cyrillic"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+// 環境変数でmicroCMS使用を切り替え
+const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: "AIビューティーサロン推進協会 | AIでサロン経営を革新",
-  description: "AIビューティーサロン推進協会は、AI技術を活用して美容サロンの経営効率化、顧客満足度の向上、そして新たな価値創造を支援します。",
-  keywords: ["AI", "美容サロン", "経営効率化", "集客自動化", "リピート率向上", "採用最適化"],
-  openGraph: {
-    title: "AIビューティーサロン推進協会 | AIでサロン経営を革新",
-    description: "AIビューティーサロン推進協会は、AI技術を活用して美容サロンの経営効率化、顧客満足度の向上、そして新たな価値創造を支援します。",
-    url: "/",
-    siteName: "AIビューティーサロン推進協会",
-    images: [
-      {
-        url: "/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "AIビューティーサロン推進協会",
-      },
-    ],
-    locale: "ja_JP",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "AIビューティーサロン推進協会 | AIでサロン経営を革新",
-    description: "AIビューティーサロン推進協会は、AI技術を活用して美容サロンの経営効率化、顧客満足度の向上、そして新たな価値創造を支援します。",
-    images: ["/images/og-image.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+// デフォルト値
+const defaultSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const defaultSiteDescription = "AIビューティーサロン推進協会は、AI技術を活用して美容サロンの経営効率化、顧客満足度の向上、そして新たな価値創造を支援します。";
+const defaultOgImage = "/images/og-image.png";
+
+// メタデータ生成（microCMSまたはデフォルト値）
+export async function generateMetadata(): Promise<Metadata> {
+  let siteName = SITE_NAME;
+  let siteDescription = defaultSiteDescription;
+  let siteUrl = defaultSiteUrl;
+  let ogImageUrl = defaultOgImage;
+
+  if (USE_MICROCMS) {
+    try {
+      const config = await getSiteConfig();
+      siteName = config.siteName;
+      siteDescription = config.siteDescription;
+      siteUrl = config.siteUrl;
+      ogImageUrl = config.ogImage?.url || defaultOgImage;
+    } catch (error) {
+      console.error('Failed to fetch site config from microCMS:', error);
+      // フォールバック: デフォルト値を使用
+    }
+  }
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: `${siteName} | AIでサロン経営を革新`,
+    description: siteDescription,
+    keywords: ["AI", "美容サロン", "経営効率化", "集客自動化", "リピート率向上", "採用最適化"],
+    openGraph: {
+      title: `${siteName} | AIでサロン経営を革新`,
+      description: siteDescription,
+      url: "/",
+      siteName: siteName,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: siteName,
+        },
+      ],
+      locale: "ja_JP",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${siteName} | AIでサロン経営を革新`,
+      description: siteDescription,
+      images: [ogImageUrl],
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
-  },
-};
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID || "";
+  // Google Analytics IDを取得
+  let gaId = process.env.NEXT_PUBLIC_GA_ID || "";
+  
+  if (USE_MICROCMS && !gaId) {
+    try {
+      const config = await getSiteConfig();
+      gaId = config.googleAnalyticsId || "";
+    } catch (error) {
+      console.error('Failed to fetch GA ID from microCMS:', error);
+    }
+  }
 
   return (
     <html lang="ja">

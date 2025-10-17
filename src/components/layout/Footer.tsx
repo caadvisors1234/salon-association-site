@@ -1,8 +1,31 @@
 import Link from "next/link";
 import { FOOTER_NAV_LINKS, SECONDARY_LINKS, SITE_NAME } from "@/lib/constants";
+import { getSiteConfig } from "@/lib/microcms/fetchers";
 
-export function Footer() {
+// 環境変数でmicroCMS使用を切り替え
+const USE_MICROCMS = process.env.NEXT_PUBLIC_USE_MICROCMS === 'true';
+
+export async function Footer() {
   const currentYear = new Date().getFullYear();
+  
+  // サイト情報を取得
+  let siteName = SITE_NAME;
+  let catchphrase = "AIの力で、美容業界の未来を共創する。";
+  let postalCode = "170-0013";
+  let address = "東京都豊島区東池袋1-32-2 小泉ビル4F";
+  
+  if (USE_MICROCMS) {
+    try {
+      const config = await getSiteConfig();
+      siteName = config.siteName;
+      catchphrase = config.catchphrase;
+      postalCode = config.postalCode;
+      address = config.address;
+    } catch (error) {
+      console.error('Failed to fetch site config for Footer:', error);
+      // フォールバック: デフォルト値を使用
+    }
+  }
 
   return (
     <footer className="border-t">
@@ -11,15 +34,24 @@ export function Footer() {
           {/* Company Info */}
           <div className="text-center sm:text-left">
             <Link href="/" className="inline-flex items-center font-bold text-lg touch-target">
-              {SITE_NAME}
+              {siteName}
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              AIの力で、美容業界の未来を共創する。
+              {catchphrase}
             </p>
             <address className="mt-4 text-sm text-muted-foreground not-italic">
-              〒170-0013<br />
-              東京都豊島区東池袋1-32-2<br className="sm:hidden" />
-              <span className="hidden sm:inline"> </span>小泉ビル4F
+              〒{postalCode}<br />
+              {address.split('\n').map((line, index) => (
+                <span key={index}>
+                  {line}
+                  {index < address.split('\n').length - 1 && (
+                    <>
+                      <br className="sm:hidden" />
+                      <span className="hidden sm:inline"> </span>
+                    </>
+                  )}
+                </span>
+              ))}
             </address>
           </div>
 
@@ -58,7 +90,7 @@ export function Footer() {
 
         <div className="mt-8 sm:mt-12 border-t pt-6 sm:pt-8 text-center">
           <p className="text-xs sm:text-sm text-muted-foreground">
-            &copy; {currentYear} {SITE_NAME}.<br className="sm:hidden" />
+            &copy; {currentYear} {siteName}.<br className="sm:hidden" />
             <span className="hidden sm:inline"> </span>All Rights Reserved.
           </p>
         </div>
