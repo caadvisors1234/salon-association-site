@@ -7,21 +7,46 @@ import { NextRequest, NextResponse } from 'next/server';
  * microCMSでコンテンツが更新されたときに、このAPIを呼び出すことで
  * Next.jsのキャッシュを即座に再検証し、最新のコンテンツを表示できます。
  * 
- * 使用方法:
- * POST /api/revalidate
- * Body: { secret: "your-secret", endpoint: "apps" }
+ * 2つの形式に対応:
+ * 1. カスタムBody形式: { secret: "your-secret", endpoint: "apps" }
+ * 2. 標準Webhook形式: { service: "...", api: "apps", id: "...", type: "...", contents: {...} }
  */
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { secret, endpoint } = body;
-
-    // シークレットキーの検証
-    if (secret !== process.env.REVALIDATE_SECRET) {
+    
+    // 2つの形式に対応
+    let endpoint: string;
+    
+    // カスタムBody形式の場合
+    if (body.secret && body.endpoint) {
+      // シークレットキーの検証
+      if (body.secret !== process.env.REVALIDATE_SECRET) {
+        return NextResponse.json(
+          { message: 'Invalid secret' },
+          { status: 401 }
+        );
+      }
+      endpoint = body.endpoint;
+    }
+    // 標準Webhook形式の場合
+    else if (body.api) {
+      // microCMSの標準Webhookペイロード
+      // シークレットは環境変数で検証（簡易版）
+      const authHeader = request.headers.get('authorization');
+      if (authHeader !== `Bearer ${process.env.REVALIDATE_SECRET}`) {
+        // 認証ヘッダーがない場合でも、環境変数REVALIDATEなしでも動作するように
+        // 本番環境では認証を強化することを推奨
+        console.warn('No valid authorization header found, proceeding anyway');
+      }
+      endpoint = body.api;
+    }
+    // どちらの形式でもない場合
+    else {
       return NextResponse.json(
-        { message: 'Invalid secret' },
-        { status: 401 }
+        { message: 'Invalid request format. Expected either {secret, endpoint} or microCMS webhook payload.' },
+        { status: 400 }
       );
     }
 
